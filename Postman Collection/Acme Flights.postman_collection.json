@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "697237df-054c-4440-96b7-38de5ed33760",
+		"name": "Acme Flights",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "3.Update available seats",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"seat_availability\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8091/api/flights/CX888",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"flights",
+								"CX888"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.Update price",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\" : 2500.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8091/api/flights/CX888",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"flights",
+								"CX888"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.Post Flight",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"flight_code\": \"BA007\",\r\n  \"airline_name\": \"Air India\",\r\n  \"departure_airport\": \"POM\",\r\n  \"destination_airport\": \"GKA\",\r\n  \"departure_date\": \"2017-03-15 20:30:00\",\r\n  \"aircraft_type\": \"Airbus A18\",\r\n  \"seat_availability\": 200,\r\n  \"price\": 1400.00\r\n \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8091/api/flights",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"flights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.Get Destination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8091/api/flights/airline/1572/destination?offset=1&limit=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"flights",
+								"airline",
+								"1572",
+								"destination"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.Get Flights",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8091/api/flights?date=2017-03-15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"flights"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2017-03-15"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cloudhub",
+			"item": [
+				{
+					"name": "3.Update available seats",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"seat_availability\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://acme-flights-sys.us-e2.cloudhub.io/api/flights/CX888",
+							"protocol": "http",
+							"host": [
+								"acme-flights-sys",
+								"us-e2",
+								"cloudhub",
+								"io"
+							],
+							"path": [
+								"api",
+								"flights",
+								"CX888"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.Update price",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\" : 2500.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://acme-flights-sys.us-e2.cloudhub.io/api/flights/CX888",
+							"protocol": "http",
+							"host": [
+								"acme-flights-sys",
+								"us-e2",
+								"cloudhub",
+								"io"
+							],
+							"path": [
+								"api",
+								"flights",
+								"CX888"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.Post Flight",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"flight_code\": \"BA009\",\r\n  \"airline_name\": \"Air India\",\r\n  \"departure_airport\": \"POM\",\r\n  \"destination_airport\": \"GKA\",\r\n  \"departure_date\": \"2017-03-15 20:30:00\",\r\n  \"aircraft_type\": \"Airbus A18\",\r\n  \"seat_availability\": 200,\r\n  \"price\": 1400.00\r\n \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://acme-flights-sys.us-e2.cloudhub.io/api/flights",
+							"protocol": "http",
+							"host": [
+								"acme-flights-sys",
+								"us-e2",
+								"cloudhub",
+								"io"
+							],
+							"path": [
+								"api",
+								"flights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.Get Destination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://acme-flights-sys.us-e2.cloudhub.io/api/flights/airline/1572/destination?offset=1&limit=20",
+							"protocol": "http",
+							"host": [
+								"acme-flights-sys",
+								"us-e2",
+								"cloudhub",
+								"io"
+							],
+							"path": [
+								"api",
+								"flights",
+								"airline",
+								"1572",
+								"destination"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.Get Flights",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://acme-flights-sys.us-e2.cloudhub.io/api/flights?date=2017-03-15",
+							"protocol": "http",
+							"host": [
+								"acme-flights-sys",
+								"us-e2",
+								"cloudhub",
+								"io"
+							],
+							"path": [
+								"api",
+								"flights"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2017-03-15"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
