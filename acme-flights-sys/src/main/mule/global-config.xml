@@ -27,8 +27,8 @@ output application/json
 {
 "status":
      {"code": "ERROR",
-    	 "message": ""},
-          "data" : payload
+    	 "message": error.errorType.asString},
+          "data" : error.detailedDescription
            } 
            ]]></ee:set-payload>
 				</ee:message>

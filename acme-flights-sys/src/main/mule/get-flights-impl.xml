@@ -7,15 +7,14 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="retreive-destinations" doc:id="4187c870-8e7f-455a-a14a-71106e6653b0" >
 		<db:select doc:name="Select" doc:id="7bb78c08-a645-4521-96d1-fffb8a0acd37" config-ref="Database_Config">
-			<db:sql ><![CDATA[SELECT ap.city,ap.country,ap.Name,f.Destination_Airport FROM airlines_sandbox.airlines a,airlines_sandbox.flights_Akshata f , airlines_sandbox.airports ap
-where a.Airline_ID = :airline_id AND
-a.Name = f.Airline_Name AND
-f.Destination_Airport = ap.IATA;]]></db:sql>
+			<db:sql ><![CDATA[SELECT ap.city,ap.country,ap.Name,f.Destination_Airport FROM airlines_sandbox.airlines a,airlines_sandbox.flights_Akshata f , airlines_sandbox.airports ap where a.Airline_ID = :airline_id AND a.Name = f.Airline_Name AND f.Destination_Airport = ap.IATA order by ap.Name LIMIT :limit OFFSET :offset;]]></db:sql>
 			<db:input-parameters ><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
-	airline_id : attributes.uriParams.airline_id
+	airline_id : attributes.uriParams.airline_id,
+	limit : attributes.queryParams.limit as Number ,
+	offset : attributes.queryParams.offset as Number
 }]]]></db:input-parameters>
 		</db:select>
 		<ee:transform doc:name="Transform Message" doc:id="b5727f4c-e952-49bb-a0f4-debd24b11fd8" >

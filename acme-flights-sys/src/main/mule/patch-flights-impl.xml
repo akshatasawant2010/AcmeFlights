@@ -12,19 +12,29 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<ee:variables >
 				<ee:set-variable variableName="flight_code" ><![CDATA[attributes.uriParams.flight_code]]></ee:set-variable>
 				<ee:set-variable variableName="seat_availability" ><![CDATA[payload.seat_availability]]></ee:set-variable>
+				<ee:set-variable variableName="price" ><![CDATA[payload.price]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="796923f9-ee58-4dca-8fba-8de0e28a6fb2" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="queries" ><![CDATA[%dw 2.0
+output application/json
+---
+if(!isEmpty(payload.price))
+
+	"update airlines_sandbox.flights_Akshata set Price ='" ++ vars.'price' ++ "' where Flight_Code = '" ++ vars.flight_code ++ " '"
+
+else 
+
+	"update airlines_sandbox.flights_Akshata set Seat_Availability =" ++ vars.seat_availability ++ " where Flight_Code = '" ++ vars.flight_code ++ "' "
+]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<try doc:name="Try" doc:id="8e72da54-a341-473b-b747-4450ff2638a2" >
 			<db:update doc:name="Update" doc:id="6ce58bfc-3a98-48b7-ad22-c8487026c930" config-ref="Database_Config">
-			<db:sql><![CDATA[update airlines_sandbox.flights_Akshata set Seat_Availability = :seat_availability where Flight_Code = :flight_code]]></db:sql>
-			<db:input-parameters><![CDATA[#[%dw 2.0
-output application/json
----
-{
-	seat_availability : vars.seat_availability,
-	flight_code : vars.flight_code
-	
-}]]]></db:input-parameters>
+			<db:sql><![CDATA[#[vars.queries]]]></db:sql>
 		</db:update>
 			<logger level="INFO" doc:name="Logger" doc:id="f0aa19a6-40b6-4bdb-b3a0-d1fa3a82dfaf" message="#[payload]"/>
 			<db:select doc:name="Select" doc:id="c0099eda-2a54-4340-bdad-6d6488ff3310" config-ref="Database_Config">
