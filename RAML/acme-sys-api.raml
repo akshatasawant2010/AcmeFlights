@@ -15,16 +15,11 @@ types :
         type: postFlightDataType
         example: !include  /flights-assets/flights-examples/post-flight-example.raml
     responses:
-        200:
+        201:
           body:
             application/json:
-              example: 
-                    {"status":
-                        {"code": "SUCCESS",
-                        "message": "Successfully Retrieved"},
-                        "data" :{} 
-                    }  
-
+              example: !include /flights-assets/flight-response-examples/post-flights-example.raml
+                    
   get:
     queryParameters:
       date:
@@ -36,12 +31,8 @@ types :
       200:
         body:
           application/json:
-            example: 
-                  {"status":
-                      {"code": "SUCCESS",
-                      "message": "Successfully Retrieved"},
-                      "data" :{} 
-                  }   
+            example: !include /flights-assets/flight-response-examples/get-flights-example.raml
+                    
   /{flight_code}:
     patch:
       displayName: Update available seats
@@ -55,12 +46,8 @@ types :
        200:
         body:
           application/json:
-            example: 
-                  {"status":
-                      {"code": "SUCCESS",
-                      "message": "Successfully Updated"},
-                      "data" :{} 
-                  } 
+            example: !include /flights-assets/flight-response-examples/patch-flights-example.raml
+               
 
   /airline/{airline_id}:
     /destination:
@@ -80,12 +67,7 @@ types :
           200:
             body:
               application/json:
-                example: 
-                      {"status":
-                          {"code": "SUCCESS",
-                          "message": "Successfully Retrieved"},
-                          "data" :{} 
-                      } 
-
+                example: !Include /flights-assets/flight-response-examples/get-destinations-example.raml
+                    
   
   

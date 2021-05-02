@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
 	<http:listener-config name="acme-sys-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8091" />
     </http:listener-config>
@@ -16,6 +17,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<db:my-sql-connection host="${dbConfig.host}" port="${dbConfig.port}" user="${dbConfig.username}" password="${dbConfig.password}"/>
 	</db:config>
 	<configuration doc:name="Configuration" doc:id="6724f2a7-66c7-463d-908d-52ce61d02ea8" defaultErrorHandler-ref="global-configError_Handler" />
+	<api-gateway:autodiscovery apiId="16837075" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="4aa1ba28-edf2-4998-9197-966b4814182d" flowRef="acme-sys-api-main" />
 	<error-handler name="global-configError_Handler" doc:id="13ddb51c-4c3f-4c22-b704-13ee0d753867" >
 		<on-error-propagate enableNotifications="false" logException="true" doc:name="On Error Propagate" doc:id="54f8efbc-a85e-4d78-a4f2-f8793a6d81d4" type="ANY">
 			<logger level="INFO" doc:name="Logger" doc:id="c2a9a35d-fc8a-405a-97e2-39c320a5252a" />
