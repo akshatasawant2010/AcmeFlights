@@ -1,22 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="retreive-destinations" doc:id="4187c870-8e7f-455a-a14a-71106e6653b0" >
 		<db:select doc:name="Select" doc:id="7bb78c08-a645-4521-96d1-fffb8a0acd37" config-ref="Database_Config">
-			<db:sql ><![CDATA[select flight_code,airline_name  from airlines_sandbox.flights_Akshata 
-where date(Departure_Date) = :]]></db:sql>
+			<db:sql ><![CDATA[SELECT ap.city,ap.country,ap.Name,f.Destination_Airport FROM airlines_sandbox.airlines a,airlines_sandbox.flights_Akshata f , airlines_sandbox.airports ap
+where a.Airline_ID = :airline_id AND
+a.Name = f.Airline_Name AND
+f.Destination_Airport = ap.IATA;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	airline_id : attributes.uriParams.airline_id
+}]]]></db:input-parameters>
 		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="b5727f4c-e952-49bb-a0f4-debd24b11fd8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "status": {
+    "code": "SUCCESS",
+    "message": "Successfully Retrieved"
+  },
+  "data":  payload
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="21f42d77-0031-492b-abd5-d065cbfb86e2" />
 	</sub-flow>
 	<sub-flow name="retreive-flights" doc:id="30ca6e2a-05e0-4ac5-b6e7-7f433dcd1da7" >
 		<db:select doc:name="Select" doc:id="9daf793d-adca-463d-ab65-039fcfc15b0c" config-ref="Database_Config">
 			<db:sql ><![CDATA[select flight_code,airline_name  from airlines_sandbox.flights_Akshata 
 where date(Departure_Date) = :date]]></db:sql>
-			<db:input-parameters ><![CDATA[#[{
+			<db:input-parameters ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
 	date : attributes.queryParams.date
 }]]]></db:input-parameters>
 		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="4bf8d46e-d2a3-4863-a13b-983e62544300" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "status": {
+    "code": "SUCCESS",
+    "message": "Successfully Retrieved"
+  },
+  "data":  payload
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="bd755c4a-de68-4057-8eaa-394b2538db15" />
 	</sub-flow>
 </mule>

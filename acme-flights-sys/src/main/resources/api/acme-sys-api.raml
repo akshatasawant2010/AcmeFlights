@@ -5,7 +5,7 @@ description: To perform operations based on flights
 types :
   postFlightDataType: !include /flights-assets/flights-dataTypes/post-flight-dataType.raml
   patchFlightDataType : !include /flights-assets/flights-dataTypes/patch-flight-dataType.raml
-  
+
 /flights:
   post:
     displayName: Add Flight
@@ -13,7 +13,7 @@ types :
     body:
       application/json:
         type: postFlightDataType
-        example: 
+        example: !include  /flights-assets/flights-examples/post-flight-example.raml
           
 
 
@@ -54,31 +54,30 @@ types :
                       "data" :{} 
                   } 
 
-
-  /destinations:
-    get:
-      queryParameters:
-        country:
-          required: false
-          type: string
-        city:
-          required: false
-          type: string
-        airportName:
-          required: false
-          type: string 
-      displayName: Retrive a paginated list
-      description: Retrieve a paginated list of destinations (country, city, airport name) for a given airline
-      responses:
-        200:
-          body:
-            application/json:
-              example: 
-                    {"status":
-                        {"code": "SUCCESS",
-                        "message": "Successfully Retrieved"},
-                        "data" :{} 
-                    } 
+  /airline/{airline_id}:
+    /destination:
+      get:
+        queryParameters:
+          offset:
+            example: 1
+            type: number
+            format: int
+          limit:
+            example: 20
+            type: number
+            format: int
+        displayName: Retrive a paginated list
+        description: Retrieve a paginated list of destinations (country, city, airport name) for a given airline
+        responses:
+          200:
+            body:
+              application/json:
+                example: 
+                      {"status":
+                          {"code": "SUCCESS",
+                          "message": "Successfully Retrieved"},
+                          "data" :{} 
+                      } 
 
   
   

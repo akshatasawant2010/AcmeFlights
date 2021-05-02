@@ -3,5 +3,7 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-	<sub-flow name="post-flights-implSub_Flow" doc:id="a4b9447c-27ec-4299-b07a-e16eba2d81f3" />
+	<sub-flow name="post-flights-implSub_Flow" doc:id="a4b9447c-27ec-4299-b07a-e16eba2d81f3" >
+		<logger level="INFO" doc:name="Logger" doc:id="d36280fc-3bb2-407b-b86f-c58628da3806" />
+	</sub-flow>
 </mule>
