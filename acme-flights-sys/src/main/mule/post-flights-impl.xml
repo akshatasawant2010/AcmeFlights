@@ -1,9 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-	<sub-flow name="post-flights-implSub_Flow" doc:id="a4b9447c-27ec-4299-b07a-e16eba2d81f3" >
-		<logger level="INFO" doc:name="Logger" doc:id="d36280fc-3bb2-407b-b86f-c58628da3806" />
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="post-flights" doc:id="a4b9447c-27ec-4299-b07a-e16eba2d81f3" >
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="a1db2490-3a55-4f2d-8edc-4d8f2256e4ff" variableName="requestPayload"/>
+		<db:select doc:name="Select" doc:id="e47c1550-5048-4707-8b60-aab57814b398" config-ref="Database_Config">
+			<db:sql ><![CDATA[select 1 from airlines_sandbox.routes where Source_Airport = :departure_airport and  Destination_Airport = :destination_airport
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[vars.requestPayload]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="02d6f68e-c7a9-4d6b-a190-b08d8dfc53cd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="b9921b00-4e9f-4c16-943a-0fa1bc1f304a" >
+			<when expression="#[!isEmpty(payload)]">
+				<db:insert doc:name="Insert" doc:id="d85088de-ca2a-4bca-bc44-3fb284633975" config-ref="Database_Config">
+			<db:sql><![CDATA[INSERT INTO airlines_sandbox.flights_Akshata(Flight_Code,Airline_Name,Departure_Airport,Destination_Airport,Departure_Date,Aircraft_Type,Seat_Availability,Price) values(:flight_code,:airline_name,:departure_airport,:destination_airport,:departure_date,:aircraft_type,:seat_availability,:price)]]></db:sql>
+			<db:input-parameters><![CDATA[#[vars.requestPayload]]]></db:input-parameters>
+		</db:insert>
+				<logger level="INFO" doc:name="Logger" doc:id="d36280fc-3bb2-407b-b86f-c58628da3806" />
+				<db:select doc:name="Select" doc:id="8ba4d4b1-10f3-4808-a5aa-29f5ad71bea7" config-ref="Database_Config">
+					<db:sql ><![CDATA[select * from airlines_sandbox.flights_Akshata where Flight_Code= :flight_id]]></db:sql>
+					<db:input-parameters ><![CDATA[#[{
+	flight_id : vars.requestPayload.flight_code
+}]]]></db:input-parameters>
+				</db:select>
+				<ee:transform doc:name="Transform Message" doc:id="8b28bfdf-2593-49e6-82e5-b9ec597b2af2" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"status":
+     {"code": "SUCCESS",
+    	 "message": "Successfully Added"},
+          "data" : payload
+ } 
+           ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Transform Message" doc:id="71963821-f698-4072-b052-b68601c205ca" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"status":
+     {"code": "SUCCESS",
+    	 "message": "No Route Found"},
+          "data" : payload
+           } ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
 	</sub-flow>
 </mule>

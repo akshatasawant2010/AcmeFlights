@@ -126,7 +126,9 @@ output application/json
         <logger level="INFO" doc:name="Logger" doc:id="c47d96f2-fdb5-47a2-8c0e-dd95fda72ee5" message="END Logger " />
     </flow>
     <flow name="post:\flights:application\json:acme-sys-api-config">
-        <logger level="INFO" message="post:\flights:application\json:acme-sys-api-config" />
+        <logger level="INFO" message="Start of Flow" doc:name="START Logger"/>
+		<flow-ref doc:name="post-flights" doc:id="df146ce9-ccd3-4c2f-ba78-f358edfe1dd7" name="post-flights"/>
+		<logger level="INFO" doc:name="END Logger" doc:id="777a3420-8d6d-4247-af4a-ecc41e3fd022" message="End of FLow"/>
     </flow>
     <flow name="patch:\flights\(flight_code):application\json:acme-sys-api-config">
 		<logger level="INFO" doc:name="Logger" doc:id="ed3950ef-7bf3-4f57-a8df-4d9e5ccd65be" />
