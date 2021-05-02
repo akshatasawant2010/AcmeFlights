@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="update-seat-availability" doc:id="3e09359a-465b-4b97-8d71-3632479ffb48" >
+		<ee:transform doc:name="Transform Message" doc:id="f7d68bfb-980b-4845-84bd-239f3aaa719a">
+			<ee:message>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="flight_code" ><![CDATA[attributes.uriParams.flight_code]]></ee:set-variable>
+				<ee:set-variable variableName="seat_availability" ><![CDATA[payload.seat_availability]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<try doc:name="Try" doc:id="8e72da54-a341-473b-b747-4450ff2638a2" >
+			<db:update doc:name="Update" doc:id="6ce58bfc-3a98-48b7-ad22-c8487026c930" config-ref="Database_Config">
+			<db:sql><![CDATA[update airlines_sandbox.flights_Akshata set Seat_Availability = :seat_availability where Flight_Code = :flight_code]]></db:sql>
+			<db:input-parameters><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	seat_availability : vars.seat_availability,
+	flight_code : vars.flight_code
+	
+}]]]></db:input-parameters>
+		</db:update>
+			<logger level="INFO" doc:name="Logger" doc:id="f0aa19a6-40b6-4bdb-b3a0-d1fa3a82dfaf" message="#[payload]"/>
+			<db:select doc:name="Select" doc:id="c0099eda-2a54-4340-bdad-6d6488ff3310" config-ref="Database_Config">
+			<db:sql><![CDATA[select * from airlines_sandbox.flights_Akshata where Flight_Code = :flight_code]]></db:sql>
+			<db:input-parameters><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	flight_code : vars.flight_code
+}]]]></db:input-parameters>
+		</db:select>
+			<ee:transform doc:name="Transform Message" doc:id="d20b7a1d-fa4a-49cd-ba01-c2fa51d4289d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="INFO" doc:name="Logger" doc:id="e1ad7c48-210e-4a01-9207-d64523138a53" message="#[payload]"/>
+		</try>
+		<ee:transform doc:name="Transform Message" doc:id="8f75ade0-e734-4f89-8180-ade670a224a9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"status":
+     {"code": "SUCCESS",
+    	 "message": "Successfully Updated"},
+          "data" : payload
+           } 
+           ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="01ffcb53-1c6e-4fd9-9de1-a25cede1c21e" message="#[payload]"/>
+	</sub-flow>
+</mule>

@@ -120,27 +120,6 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="patch:\flights\(flight_code):acme-sys-api-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="flight_code">attributes.uriParams.'flight_code'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  status: {
-    code: "SUCCESS",
-    message: "Successfully Updated"
-  },
-  data: {}
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
     <flow name="get:\flights:acme-sys-api-config">
         <logger level="INFO" doc:name="Logger" doc:id="0fad3d73-16c5-4fe7-ad3c-945f27dfffd8" message="START Logger " />
         <flow-ref doc:name="retreive-flights" doc:id="b550efad-a513-4503-96fb-370b3e99729f" name="retreive-flights" />
@@ -150,25 +129,9 @@ output application/json
         <logger level="INFO" message="post:\flights:application\json:acme-sys-api-config" />
     </flow>
     <flow name="patch:\flights\(flight_code):application\json:acme-sys-api-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="flight_code">attributes.uriParams.'flight_code'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  status: {
-    code: "SUCCESS",
-    message: "Successfully Updated"
-  },
-  data: {}
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="ed3950ef-7bf3-4f57-a8df-4d9e5ccd65be" />
+		<flow-ref doc:name="Flow Reference" doc:id="314a501c-6dc7-4e45-bbc1-0da7338df066" name="update-seat-availability"/>
+		<logger level="INFO" doc:name="Logger" doc:id="becdc364-48e3-4dd3-9fc9-e68803b4d914" message="END "/>
     </flow>
     <flow name="get:\flights\airline\(airline_id)\destination:acme-sys-api-config">
 		<logger level="INFO" doc:name="START Logger" doc:id="e2ce3f0c-8d37-4c7e-aa64-6f7904f90019" message="Start of Flow"/>
