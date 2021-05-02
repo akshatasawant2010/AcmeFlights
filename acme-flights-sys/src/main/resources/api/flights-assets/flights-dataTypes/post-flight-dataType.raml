@@ -1,0 +1,28 @@
+#%RAML 1.0 DataType
+
+type: object
+properties:
+  flight_code:
+    type: string
+    required: true
+  airline_name:
+    type: string
+    required: true 
+  departure_airport:
+    type: string
+    required: true
+  destination_airport:
+    type: string
+    required : true 
+  departure_date: 
+    required : true
+  aircraft_type:
+    type: string
+    required : true 
+  seat_availability:
+    type: integer
+    required: true
+  price:
+    required: true
+additionalProperties: false
+ 

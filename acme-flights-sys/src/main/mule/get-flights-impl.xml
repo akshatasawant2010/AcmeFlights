@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<sub-flow name="retreive-destinations" doc:id="4187c870-8e7f-455a-a14a-71106e6653b0" >
+		<db:select doc:name="Select" doc:id="7bb78c08-a645-4521-96d1-fffb8a0acd37" config-ref="Database_Config">
+			<db:sql ><![CDATA[select flight_code,airline_name  from airlines_sandbox.flights_Akshata 
+where date(Departure_Date) = :]]></db:sql>
+		</db:select>
+	</sub-flow>
+	<sub-flow name="retreive-flights" doc:id="30ca6e2a-05e0-4ac5-b6e7-7f433dcd1da7" >
+		<db:select doc:name="Select" doc:id="9daf793d-adca-463d-ab65-039fcfc15b0c" config-ref="Database_Config">
+			<db:sql ><![CDATA[select flight_code,airline_name  from airlines_sandbox.flights_Akshata 
+where date(Departure_Date) = :date]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	date : attributes.queryParams.date
+}]]]></db:input-parameters>
+		</db:select>
+	</sub-flow>
+</mule>

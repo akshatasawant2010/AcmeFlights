@@ -1,0 +1,6 @@
+dbConfig:
+  username : "Akshata"
+  password : "Akshata2021"
+  host : "rds-mysql-assessment.ckld9drpn0yb.eu-west-1.rds.amazonaws.com"
+  port : "3306"
+  

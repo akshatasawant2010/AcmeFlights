@@ -1,0 +1,84 @@
+#%RAML 1.0
+title: acme-sys-api
+description: To perform operations based on flights
+
+types :
+  postFlightDataType: !include /flights-assets/flights-dataTypes/post-flight-dataType.raml
+  patchFlightDataType : !include /flights-assets/flights-dataTypes/patch-flight-dataType.raml
+  
+/flights:
+  post:
+    displayName: Add Flight
+    description: Simulate new flight availability by adding a new flight for a specified route
+    body:
+      application/json:
+        type: postFlightDataType
+        example: 
+          
+
+
+  get:
+    queryParameters:
+      date:
+        required : true 
+        type: date-only
+    displayName: Get Flights
+    description: Retrieve a list of available flights on a given date
+    responses:
+      200:
+        body:
+          application/json:
+            example: 
+                  {"status":
+                      {"code": "SUCCESS",
+                      "message": "Successfully Retrieved"},
+                      "data" :{} 
+                  }   
+  /{flight_code}:
+    patch:
+      displayName: Update available seats
+      description: Simulate a ticket purchase by changing the seats available for a specified flight
+      body:
+        application/json:
+          type: patchFlightDataType
+          example: !include /flights-assets/flights-examples/patch-flight-example.raml
+
+      responses:
+       200:
+        body:
+          application/json:
+            example: 
+                  {"status":
+                      {"code": "SUCCESS",
+                      "message": "Successfully Updated"},
+                      "data" :{} 
+                  } 
+
+
+  /destinations:
+    get:
+      queryParameters:
+        country:
+          required: false
+          type: string
+        city:
+          required: false
+          type: string
+        airportName:
+          required: false
+          type: string 
+      displayName: Retrive a paginated list
+      description: Retrieve a paginated list of destinations (country, city, airport name) for a given airline
+      responses:
+        200:
+          body:
+            application/json:
+              example: 
+                    {"status":
+                        {"code": "SUCCESS",
+                        "message": "Successfully Retrieved"},
+                        "data" :{} 
+                    } 
+
+  
+  
